@@ -7,7 +7,6 @@ Created on Mon Mar 18 09:38:15 2019
 
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QGridLayout
-form pyQt5.QtWidgets import QHBoxLayout, QGroupBox, QVBoxLayout
 from PyQt5.QtGui import QIcon
 
 print('Running OpenXC Dashboard...')
