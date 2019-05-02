@@ -13,8 +13,19 @@ class Car:
         self.make = make
         self.model = model
         self.year = year
-        self.XC_por = port
-        
+        self.XC_port = port
+    
+    def getMake(self):
+        return self.make
+    
+    def getModel(self):
+        return self.model
+    
+    def getYear(self):
+        return self.year
+    
+    def getPortNumber(self):
+        return self.XC_port
     '''
     Processing data
     '''    
