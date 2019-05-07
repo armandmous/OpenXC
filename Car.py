@@ -8,7 +8,7 @@ Description:    OpenXC
 class Car:
     '''Basic car class'''
     
-    def __init__(self, make, model, port, year = '2005'):
+    def __init__(self, make = 'Chevrolet', model = 'Malibu Classic', port = '127.0.0.1', year = '2005'):
         '''Constructor'''
         self.make = make
         self.model = model
