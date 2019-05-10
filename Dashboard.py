@@ -18,7 +18,7 @@ class Dashboard():
     def __init__(self):
         self.win = tk.Tk()                  # create a window object
         self.window_title = 'Dashboard'     # create window's title
-        chevy = Car.Car()                   # create a car object
+        self.chevy = Car.Car()              # create a car object
         
         #----------------------------------------------------------------------
         # Create and initialize variable for each text field
@@ -54,12 +54,12 @@ class Dashboard():
         # Create container (frame) that holds labels displaying vehicle information
         #----------------------------------------------------------------------
         # TODO: Create and add Labels
-        self.make = chevy.getMake()
-        self.mode = chevy.getModel()
-        self.year = chevy.getYear()
-        self.port = chevy.getPortNumber()
+        self.make = self.chevy.getMake()
+        self.mode = self.chevy.getModel()
+        self.year = self.chevy.getYear()
+        self.port = self.chevy.getPortNumber()
         
-        self.speed = chevy.getSpeed()
+        self.speed = self.chevy.getSpeed()
         
         # Create a container to hold labels
         self.l1Frame = ttk.LabelFrame(self.win, text='Vehicle')
@@ -112,3 +112,4 @@ class Dashboard():
         print('model entered: ' + self.field2_variable.get())
         print('Year entered : ' + self.field3_variable.get())
         print('Port entered : ' + self.field4_variable.get())
+        self.scr(text = self.chevy.read_trace())

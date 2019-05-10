@@ -5,6 +5,8 @@ Name:           Armand Moussaouyi and Derek Cotton
 Description:    OpenXC
 """
 
+import
+
 class Car:
     '''Basic car class'''
     
@@ -26,11 +28,13 @@ class Car:
     
     def getPortNumber(self):
         return self.XC_port
+    
     '''
     Processing data
     '''    
     def process_data(self):
-        print('Processing data...')    
+        print('Processing data...')
+            
         
     def readData(self, port_number):
         print('Reading data...')
@@ -57,8 +61,19 @@ class Car:
     '''
     Engine speed
     '''
-    def getTransmissionTorque(self):
+    def engine_speed(self):
         print('Getting engine speed ...')
+        
+        
+    def read_trace(self):
+        data = ''
+        f = open('dtc.txt', 'r')
+        if f.mode == 'r':
+            data = f.read()
+            print(data)
+            print(len(data))
+            print(type(data))
+        return data
     
     
         
