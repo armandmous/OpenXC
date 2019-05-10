@@ -17,7 +17,7 @@ def main():
     my_car = Car.Car(make, model, port_number, year)
     my_car.getSpeed()
     
-    board = Dashboard.Dashboard()
+    Dashboard.Dashboard()
     #board
     
 if __name__ == ('__main__'):
