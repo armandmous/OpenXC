@@ -18,7 +18,6 @@ class Dashboard():
     def __init__(self):
         self.win = tk.Tk()                  # create a window object
         self.window_title = 'Dashboard'     # create window's title
-        self.chevy = Car.Car()              # create a car object
         
         #----------------------------------------------------------------------
         # Create and initialize variable for each text field
@@ -41,10 +40,10 @@ class Dashboard():
         self.field2Label = ttk.Label(self.lFrame, text="Enter Port Number:").grid(column = 3, row = 0)
         
         # TODO: text fields
-        self.field1 = ttk.Entry(self.lFrame, width = 20, textvariable = self.field1_variable).grid(column = 0, row = 1)
-        self.field2 = ttk.Entry(self.lFrame, width = 20, textvariable = self.field2_variable).grid(column = 1, row = 1)
-        self.field3 = ttk.Entry(self.lFrame, width = 20, textvariable = self.field3_variable).grid(column = 2, row = 1)
-        self.field4 = ttk.Entry(self.lFrame, width = 20, textvariable = self.field4_variable).grid(column = 3, row = 1)
+        self.field1 = ttk.Entry(self.lFrame, width = 26, textvariable = self.field1_variable).grid(column = 0, row = 1)
+        self.field2 = ttk.Entry(self.lFrame, width = 26, textvariable = self.field2_variable).grid(column = 1, row = 1)
+        self.field3 = ttk.Entry(self.lFrame, width = 26, textvariable = self.field3_variable).grid(column = 2, row = 1)
+        self.field4 = ttk.Entry(self.lFrame, width = 26, textvariable = self.field4_variable).grid(column = 3, row = 1)
         # apply button
         self.action = ttk.Button(self.lFrame, text="Apply", command = self.apply).grid(column = 4, row = 1) 
         
@@ -54,20 +53,19 @@ class Dashboard():
         # Create container (frame) that holds labels displaying vehicle information
         #----------------------------------------------------------------------
         # TODO: Create and add Labels
-        self.make = self.chevy.getMake()
-        self.mode = self.chevy.getModel()
-        self.year = self.chevy.getYear()
-        self.port = self.chevy.getPortNumber()
-        
-        self.speed = self.chevy.getSpeed()
+        self.make = ''
+        self.mode = ''
+        self.year = ''
+        self.port = ''
+        self.speed = ''
         
         # Create a container to hold labels
         self.l1Frame = ttk.LabelFrame(self.win, text='Vehicle')
         self.l1Frame.grid(column = 0, row = 1, padx = 15, pady = 15)
-        self.label1 = ttk.Label(self.l1Frame, text="Make :  " + self.make).grid(column = 0, row = 0)
-        self.label2 = ttk.Label(self.l1Frame, text="Model:  " + self.mode).grid(column = 0, row = 1)
-        self.label3 = ttk.Label(self.l1Frame, text="Year :  " + str(self.year)).grid(column = 0, row = 2)
-        self.label4 = ttk.Label(self.l1Frame, text="PORT :  " + str(self.port)).grid(column = 0, row = 3)
+        self.label1 = ttk.Label(self.l1Frame, text="_Make :  ").grid(column = 0, row = 0)
+        self.label2 = ttk.Label(self.l1Frame, text="Model :  ").grid(column = 0, row = 1)
+        self.label3 = ttk.Label(self.l1Frame, text="_Year :  ").grid(column = 0, row = 2)
+        self.label4 = ttk.Label(self.l1Frame, text="_PORT :  ").grid(column = 0, row = 3)
         
         self.label5 = ttk.Label(self.l1Frame, text="Speed :  " ).grid(column = 1, row = 0)
         self.label6 = ttk.Label(self.l1Frame, text="Feat1 :  " ).grid(column = 1, row = 1)
@@ -85,10 +83,12 @@ class Dashboard():
         # TODO: implement live trace screen
         self.l2Frame = ttk.LabelFrame(self.win, text='Feed Live Trace...')
         self.l2Frame.grid(column = 0, row = 2, padx = 15, pady = 15)
-        self.scrolW  = 70                          
-        self.scrolH  = 25
+        self.scrolW  = 90                          
+        self.scrolH  = 30
         self.scr = scrolledtext.ScrolledText(self.l2Frame, width = self.scrolW, height = self.scrolH, wrap = tk.WORD)
         self.scr.grid(column = 0, columnspan = 3)
+        # clear button
+        self.clear = ttk.Button(self.l2Frame, text="Clear Trace Feed", command = self.clear_trace).grid(column = 0, row = 1) 
         
         #self.l3Frame = ttk.LabelFrame(self.win, text='Status')
         #self.l2Frame.grid(column = 1, row = 0, padx = 15, pady = 15)
@@ -107,9 +107,44 @@ class Dashboard():
     #   the car status data will be return from the car class object
     #----------------------------------------------------------------------
     def apply(self):
-        print('button pressed!!')
-        print('Make entered : ' + self.field1_variable.get())
-        print('model entered: ' + self.field2_variable.get())
-        print('Year entered : ' + self.field3_variable.get())
-        print('Port entered : ' + self.field4_variable.get())
-        self.scr(text = self.chevy.read_trace())
+        self.scr.delete('1.0', tk.END)
+        
+        car_var1 = self.field1_variable.get()
+        car_var2 = self.field2_variable.get()
+        car_var3 = self.field3_variable.get()
+        car_var4 = self.field4_variable.get()
+        
+        if len(car_var1) < 3:
+            self.scr.insert(tk.INSERT, 'Warning:\tInvalid make / make not found\n')
+        if len(car_var2) < 1:
+            self.scr.insert(tk.INSERT, 'Warning:\tInvalid model / model not found\n')
+        if len(car_var3) < 4:
+            self.scr.insert(tk.INSERT, 'Warning:\tInvalid year / year not found\n')
+        if len(car_var4) < 9:
+            self.scr.insert(tk.INSERT, 'Warning:\tInvalid ip address / ip address not found\n')
+
+        #----------------------------------------------------------------------
+        # If valid is entered display the correct data
+        #----------------------------------------------------------------------
+        if (len(car_var1) > 2) and (len(car_var2) > 0) and (len(car_var3) > 3) and (len(car_var4) > 8):
+                # create car object and update labels with car data
+                self.chevy = Car.Car(car_var1, car_var2, car_var3, car_var4)   # create a car object
+                self.make = self.chevy.getMake()
+                self.mode = self.chevy.getModel()
+                self.year = self.chevy.getYear()
+                self.port = self.chevy.getPortNumber()
+
+                self.scr.insert(tk.INSERT, self.chevy.read_dtc_trace())
+                self.scr.insert(tk.INSERT, '\n\nData Trace:\n')
+                self.scr.insert(tk.INSERT, '----------------------------------------------------------------------------------------\n')
+                self.scr.insert(tk.INSERT, self.chevy.read_uas_trace())
+
+                self.label1 = ttk.Label(self.l1Frame, text='_Make : ' + self.make + '\t').grid(column = 0, row = 0)
+                self.label2 = ttk.Label(self.l1Frame, text="Model : " + self.mode + '\t').grid(column = 0, row = 1)
+                self.label3 = ttk.Label(self.l1Frame, text="_Year : " + self.year + '\t').grid(column = 0, row = 2)
+                self.label4 = ttk.Label(self.l1Frame, text="_PORT : " + self.port + '\t').grid(column = 0, row = 3)
+                
+                
+        
+    def clear_trace(self):
+        self.scr.delete('1.0', tk.END)

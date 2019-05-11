@@ -16,7 +16,7 @@ def main():
     
     my_car = Car.Car(make, model, port_number, year)
     my_car.getSpeed()
-    #my_car.read_trace()
+    #my_car.read_dtc_trace()
     
     Dashboard.Dashboard()
     #board

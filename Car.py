@@ -5,12 +5,12 @@ Name:           Armand Moussaouyi and Derek Cotton
 Description:    OpenXC
 """
 
-import
+import re
 
 class Car:
     '''Basic car class'''
     
-    def __init__(self, make = 'Chevrolet', model = 'Malibu Classic', port = '127.0.0.1', year = '2005'):
+    def __init__(self, make = 'Chevrolet', model = 'Malibu Classic',year = '2005', port = '127.0.0.1'):
         '''Constructor'''
         self.make = make
         self.model = model
@@ -64,16 +64,47 @@ class Car:
     def engine_speed(self):
         print('Getting engine speed ...')
         
-        
-    def read_trace(self):
-        data = ''
-        f = open('dtc.txt', 'r')
-        if f.mode == 'r':
-            data = f.read()
-            print(data)
-            print(len(data))
-            print(type(data))
-        return data
+    #--------------------------------------------------------------------------
+    # Read the UAS id trace from sample file
+    #--------------------------------------------------------------------------
+    def read_uas_trace(self):
+        data = []
+        file = open('uas_ids.txt', 'r')
+        if file.mode == 'r':
+            for line in file:
+                line = line.replace('{', '')
+                line = line.replace('}', '')
+                line = line.replace('[', '')
+                line = line.replace(']', '')
+                line = line.replace('\t', '')
+                line = line.replace(',', '')
+                #line = line.rstrip('\n')
+                data.append(line)
+            return data
+        else:
+            return 'No valid trace found!'
+   
+    #--------------------------------------------------------------------------
+    # Read dtc trace from sample file
+    #--------------------------------------------------------------------------     
+    def read_dtc_trace(self):
+        data = []
+        regx = re.compile(r'\W')
+        file = open('dtc.txt', 'r')
+        if file.mode == 'r':
+            for line in file:
+                #line = line.rstrip('\n')
+                #line = regx.sub('', line)
+                line = line.replace('{', '')
+                line = line.replace('}', '')
+                line = line.replace('[', '')
+                line = line.replace(']', '')
+                line = line.replace('\t', '')
+                line = line.replace(',', '')
+                data.append(line)
+            return data
+        else:
+            return ['No valid trace found!']
     
     
         
