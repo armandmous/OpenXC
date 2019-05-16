@@ -72,7 +72,6 @@ class Dashboard():
         self.label2 = ttk.Label(self.l1Frame, text="Model:  ").grid(column = 0, row = 1)
         self.label3 = ttk.Label(self.l1Frame, text="Year :  ").grid(column = 0, row = 2)
         self.label4 = ttk.Label(self.l1Frame, text="PORT :  ").grid(column = 0, row = 3)
-        self.l1Frame = ttk.LabelFrame(self.win, text='Vehicle')
         
         self.stat_frame = ttk.LabelFrame(self.main_frame, text='stat (x1000)')
         self.stat_frame.grid(column = 1, row = 1, padx = 15, pady = 15)
