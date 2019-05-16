@@ -4,10 +4,11 @@ Created on Mon Apr 15 19:58:11 2019
 
 @author: arman
 """
-import Car
+#import Car
 import Dashboard
 
 def main():
+    '''
     print('Testing car class ...')
     make = 'Chevy'
     model = 'Malibu'
@@ -16,10 +17,10 @@ def main():
     
     my_car = Car.Car(make, model, port_number, year)
     my_car.getSpeed()
-    #my_car.read_dtc_trace()
-    
+    my_car.read_dtc_trace()
+    '''
     Dashboard.Dashboard()
-    #board
+    
     
 if __name__ == ('__main__'):
     main()

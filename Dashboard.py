@@ -7,6 +7,8 @@ Created on Mon Mar 18 09:38:15 2019
 from tkinter import ttk
 import tkinter as tk
 from tkinter import scrolledtext
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 #import wx               # Import wxPython GUI toolkit 
 import Car
 
@@ -60,22 +62,28 @@ class Dashboard():
         self.speed = ''
         
         # Create a container to hold labels
-        self.l1Frame = ttk.LabelFrame(self.win, text='Vehicle')
+        self.main_frame = ttk.LabelFrame(self.win, text='Vehicle data trace...')
+        self.main_frame.grid(column = 0, row = 1, padx = 15, pady = 15)
+        
+        
+        self.l1Frame = ttk.LabelFrame(self.main_frame, text='Vehicle')
         self.l1Frame.grid(column = 0, row = 1, padx = 15, pady = 15)
-        self.label1 = ttk.Label(self.l1Frame, text="_Make :  ").grid(column = 0, row = 0)
-        self.label2 = ttk.Label(self.l1Frame, text="Model :  ").grid(column = 0, row = 1)
-        self.label3 = ttk.Label(self.l1Frame, text="_Year :  ").grid(column = 0, row = 2)
-        self.label4 = ttk.Label(self.l1Frame, text="_PORT :  ").grid(column = 0, row = 3)
+        self.label1 = ttk.Label(self.l1Frame, text="Make :  ").grid(column = 0, row = 0)
+        self.label2 = ttk.Label(self.l1Frame, text="Model:  ").grid(column = 0, row = 1)
+        self.label3 = ttk.Label(self.l1Frame, text="Year :  ").grid(column = 0, row = 2)
+        self.label4 = ttk.Label(self.l1Frame, text="PORT :  ").grid(column = 0, row = 3)
+        self.l1Frame = ttk.LabelFrame(self.win, text='Vehicle')
         
-        self.label5 = ttk.Label(self.l1Frame, text="Speed :  " ).grid(column = 1, row = 0)
-        self.label6 = ttk.Label(self.l1Frame, text="Feat1 :  " ).grid(column = 1, row = 1)
-        self.label7 = ttk.Label(self.l1Frame, text="Feat2 :  " ).grid(column = 1, row = 2)
-        self.label8 = ttk.Label(self.l1Frame, text="Feat3 :  " ).grid(column = 1, row = 3)
+        self.stat_frame = ttk.LabelFrame(self.main_frame, text='stat (x1000)')
+        self.stat_frame.grid(column = 1, row = 1, padx = 15, pady = 15)
+        self.label5 = ttk.Label(self.stat_frame, text="Vehicle speed :  ").grid(column = 0, row = 0)
+        self.label6 = ttk.Label(self.stat_frame, text="Engine speed  :  ").grid(column = 0, row = 1)
+        self.label7 = ttk.Label(self.stat_frame, text="Voltage level :  ").grid(column = 0, row = 2)
+        self.label8 = ttk.Label(self.stat_frame, text="Pressure level:  ").grid(column = 0, row = 3)
+        self.label8 = ttk.Label(self.stat_frame, text="Current level :  ").grid(column = 0, row = 4)
         
-        self.label9 = ttk.Label(self.l1Frame, text="Feat4 :  " ).grid(column = 2, row = 0)
-        self.label10 = ttk.Label(self.l1Frame, text="Feat5 :  ").grid(column = 2, row = 1)
-        self.label11 = ttk.Label(self.l1Frame, text="Feat6 :  ").grid(column = 2, row = 2)
-        self.label12 = ttk.Label(self.l1Frame, text="Feat7 :  ").grid(column = 2, row = 3)
+        self.chart_frame = ttk.LabelFrame(self.stat_frame, text='Stat')
+        self.chart_frame.grid(column = 3, row = 0, padx = 15, pady = 15)
         
         #----------------------------------------------------------------------
         # Create a text area with specific size
@@ -84,11 +92,11 @@ class Dashboard():
         self.l2Frame = ttk.LabelFrame(self.win, text='Feed Live Trace...')
         self.l2Frame.grid(column = 0, row = 2, padx = 15, pady = 15)
         self.scrolW  = 90                          
-        self.scrolH  = 30
+        self.scrolH  = 20
         self.scr = scrolledtext.ScrolledText(self.l2Frame, width = self.scrolW, height = self.scrolH, wrap = tk.WORD)
         self.scr.grid(column = 0, columnspan = 3)
         # clear button
-        self.clear = ttk.Button(self.l2Frame, text="Clear Trace Feed", command = self.clear_trace).grid(column = 0, row = 1) 
+        self.clear = ttk.Button(self.l2Frame, text="Clear Trace Feed", command = self.clear_trace).grid(column = 0, row = 1)
         
         #self.l3Frame = ttk.LabelFrame(self.win, text='Status')
         #self.l2Frame.grid(column = 1, row = 0, padx = 15, pady = 15)
@@ -139,12 +147,33 @@ class Dashboard():
                 self.scr.insert(tk.INSERT, '----------------------------------------------------------------------------------------\n')
                 self.scr.insert(tk.INSERT, self.chevy.read_uas_trace())
 
-                self.label1 = ttk.Label(self.l1Frame, text='_Make : ' + self.make + '\t').grid(column = 0, row = 0)
-                self.label2 = ttk.Label(self.l1Frame, text="Model : " + self.mode + '\t').grid(column = 0, row = 1)
-                self.label3 = ttk.Label(self.l1Frame, text="_Year : " + self.year + '\t').grid(column = 0, row = 2)
-                self.label4 = ttk.Label(self.l1Frame, text="_PORT : " + self.port + '\t').grid(column = 0, row = 3)
+                self.label1 = ttk.Label(self.l1Frame, text='Make : ' + self.make + '\t').grid(column = 0, row = 0)
+                self.label2 = ttk.Label(self.l1Frame, text="Model: " + self.mode + '\t').grid(column = 0, row = 1)
+                self.label3 = ttk.Label(self.l1Frame, text="Year : " + self.year + '\t').grid(column = 0, row = 2)
+                self.label4 = ttk.Label(self.l1Frame, text="PORT : " + self.port + '\t').grid(column = 0, row = 3)
+                
+                self.label5 = ttk.Label(self.stat_frame, text="Vehicle speed : \t" + str(self.chevy.getSpeed()) + 'KPH').grid(column = 0, row = 0)
+                self.label6 = ttk.Label(self.stat_frame, text="Engine speed  : \t" + str(self.chevy.getEngineSpeed()) + 'RPM' ).grid(column = 0, row = 1)
+                self.label7 = ttk.Label(self.stat_frame, text="Voltage level : \t" + str(self.chevy.getVoltageLevel()) + 'Volt').grid(column = 0, row = 2)
+                self.label8 = ttk.Label(self.stat_frame, text="Pressure level: \t" + str(self.chevy.getPressureLevel()) + 'KPS').grid(column = 0, row = 3)
+                self.label8 = ttk.Label(self.stat_frame, text="Current level : \t" + str(self.chevy.getCurrentLevel())  + 'AMP').grid(column = 0, row = 4)
                 
                 
+                self.label4 = ttk.Label(self.l1Frame, text="PORT : " + self.port + '\t').grid(column = 0, row = 3)
+                #-------------------------------------------------------------
+                fig = Figure(figsize=(12, 8), facecolor='white')
+                #-------------------------------------------------------------
+                # axis = fig.add_subplot(111)
+                # 1 row,  1 column, only graph
+                axis = fig.add_subplot(211)     # 2 rows, 1 column, Top graph 
+                #-------------------------------------------------------------
+                xValues = [1,2,3,4]
+                yValues = [5,7,6,8]
+                axis.plot(xValues, yValues)
+                axis.set_xlabel('Horizontal Label')
+                axis.set_ylabel('Vertical Label')
+                # axis.grid()                   # default line style 
+                axis.grid(linestyle='-')
         
     def clear_trace(self):
         self.scr.delete('1.0', tk.END)
